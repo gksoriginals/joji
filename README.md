@@ -20,4 +20,6 @@ python setup.py install
 varum varathirikkilla
 
 ## How to Test 
+```
 pytest tests
+```
