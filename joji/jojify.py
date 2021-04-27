@@ -44,7 +44,7 @@ class Jojify(object):
   @classmethod
   def predict(cls, text):
     emoji = cls._simple_check(text)
-    emoji = cls._emoji_match if not emoji else emoji
+    emoji = cls._emoji_match(text) if not emoji else emoji
     return emoji if emoji else else text
   
  
