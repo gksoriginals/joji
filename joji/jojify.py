@@ -28,7 +28,11 @@ class Jojify(object):
   
   @staticmethod
   def _similarity_match(word1, word2):
-      word1 = nlp(word1)
+    words = word2.split(" ")
+    word1 = nlp(word1)
+    if len(words) > 1:
+      return max([nlp(word).similarity(word1) for word in words])
+    else:
       word2 = nlp(word2)
       return word1.similarity(word2)
     
