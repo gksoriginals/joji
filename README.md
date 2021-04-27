@@ -1,5 +1,5 @@
 # Joji
-Joji convert a sentence to corresponding emoji if emoji is available
+Joji convert a text to corresponding emoji if emoji is available
 
 ## How it Works ?
 ```
