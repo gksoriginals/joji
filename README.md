@@ -29,3 +29,6 @@ print(Jojify.predict("Hello"))
 ```
 pytest tests
 ```
+
+## Future work
+1. Maybe add [vaaku2vec](https://github.com/adamshamsudeen/Vaaku2Vec) and create malayalam text to emoji  
