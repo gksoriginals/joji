@@ -23,8 +23,8 @@ python setup.py install
 >> from joji.jojify import Jojify
 >> print(Jojify.predict("dracula"))
 ('🧛', 0.09381495886751366)
->> print(Jojify.predict("sick"))
-('😫', 0.10366748792767387)
+>> print(Jojify.predict("ganja"))
+('🌿', 0.16766214349943367)
 
 ```
 
