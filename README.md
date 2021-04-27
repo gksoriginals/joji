@@ -20,10 +20,12 @@ python setup.py install
 ## How to Run 
 
 ```python
-from joji.jojify import Jojify
-print(Jojify.predict("dracula"))
+>> from joji.jojify import Jojify
+>> print(Jojify.predict("dracula"))
+('🧛', 0.09381495886751366)
+>> print(Jojify.predict("sick"))
+('😫', 0.10366748792767387)
 
- ('🧛', 0.09381495886751366)
 ```
 
 ## How to Test 
