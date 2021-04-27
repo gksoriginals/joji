@@ -47,15 +47,18 @@ class Jojify(object):
         max_score = score
     return max_emoji, score
 
+
+  @staticmethod
+  def preprocess(text):
+    text = text.lower()
+    return text
+
   @classmethod
   def predict(cls, text):
+    text = cls.preprocess(text)
     emoji = cls._simple_check(text)
     emoji = cls._context_similarity_check(text) if not emoji else emoji
     return emoji if emoji else text
   
-  @staticmethod
-  def print_emoji(unicode_):
-    k = r"\U000"+unicode_
-    print(k)
  
   
