@@ -12,7 +12,6 @@ Joji convert a sentence to corresponding emoji if emoji is available
 
 ## Libraries used
 - [Spacy](https://spacy.io)
-- 
 ## How to configure (ippo nokeetu karyam illa)
 ```
 python setup.py install 
