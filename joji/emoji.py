@@ -45,7 +45,7 @@ class Jojify(object):
       if score > max_score:
         max_emoji = cls.emoji_dict.get(emoji_name)
         max_score = score
-    return max_emoji, score
+    return max_emoji, max_score
 
 
   @staticmethod
