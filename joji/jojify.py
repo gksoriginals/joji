@@ -1,6 +1,7 @@
 import os
 import json
 import spacy
+
 try:
   nlp = spacy.load("en_core_web_md")
 except OSError:
@@ -9,7 +10,7 @@ except OSError:
   download('en_core_web_md')
   nlp = spacy.load('en_core_web_md')
 
-emoji_dict_path = "/data/emoji_dict.json"
+emoji_dict_path = "data/emoji_dict.json"
 emoji_dict = open(emoji_dict_path)
 emoji_dict = json.load(emoji_dict)
 
@@ -39,13 +40,18 @@ class Jojify(object):
       score = cls._similarity_match(text, emoji_name)
       if score > max_score:
         max_emoji = cls.emoji_dict.get(emoji_name)
-   return max_emoji, max_score
+        max_score = score
+    return max_emoji, score
 
   @classmethod
   def predict(cls, text):
     emoji = cls._simple_check(text)
     emoji = cls._context_similarity_check(text) if not emoji else emoji
-    return emoji if emoji else else text
+    return emoji if emoji else text
   
+  @staticmethod
+  def print_emoji(unicode_):
+    k = r"\U000"+unicode_
+    print(k)
  
   
