@@ -17,6 +17,14 @@ Joji convert a text to corresponding emoji if emoji is available
 python setup.py install 
 ```
 
+## Install
+
+Joji is now available in pip
+
+```
+pip install joji
+```
+
 ## How to Run 
 
 ```python
