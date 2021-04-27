@@ -20,7 +20,7 @@ python setup.py install
 ## How to Run 
 
 ```python
->> from joji.jojify import Jojify
+>> from joji.emoji import Jojify
 >> print(Jojify.predict("dracula"))
 ('🧛', 0.09381495886751366)
 >> print(Jojify.predict("ganja"))
