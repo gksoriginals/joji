@@ -1,7 +1,13 @@
 import os
 import json
 import spacy
-nlp = spacy.load("en_core_web_md")
+try:
+  nlp = spacy.load("en_core_web_md")
+except OSError:
+  print("Downloading language model for spacy (don\'t worry, this will only happen once)")
+  from spacy.cli import download
+  download('en_core_web_md')
+  nlp = spacy.load('en_core_web_md')
 
 emoji_dict_path = "/data/emoji_dict.json"
 emoji_dict = open(emoji_dict_path)
