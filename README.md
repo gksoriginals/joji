@@ -1,4 +1,4 @@
-# Joji
+# Joji (Work in progress)
 Joji convert a text to corresponding emoji if emoji is available
 
 ## How it Works ?
@@ -16,8 +16,14 @@ Joji convert a text to corresponding emoji if emoji is available
 ```
 python setup.py install 
 ```
-## How to Run
-varum varathirikkilla
+## How to Run 
+
+```python
+from joji.jojify import Jojify
+print(Jojify.predict("Hello"))
+
+# should print waving emoji
+```
 
 ## How to Test 
 ```
