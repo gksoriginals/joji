@@ -22,9 +22,9 @@ python setup.py install
 ```python
 >> from joji.emoji import Jojify
 >> print(Jojify.predict("dracula"))
-('🧛', 0.09381495886751366)
+('🧛', 0.9999999549276969)
 >> print(Jojify.predict("ganja"))
-('🌿', 0.16766214349943367)
+('🚭', 0.5574894251846991)
 
 ```
 
