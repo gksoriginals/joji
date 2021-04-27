@@ -32,7 +32,7 @@ class Jojify(object):
       return word1.similarity(word2)
     
   @classmethod  
-  def _emoji_match(cls, text):
+  def _context_similarity_check(cls, text):
     max_score = 0 # set threshold value instead
     max_emoji = None
     for emoji_name in cls.emoji_dict:
@@ -44,7 +44,7 @@ class Jojify(object):
   @classmethod
   def predict(cls, text):
     emoji = cls._simple_check(text)
-    emoji = cls._emoji_match(text) if not emoji else emoji
+    emoji = cls._context_similarity_check(text) if not emoji else emoji
     return emoji if emoji else else text
   
  
