@@ -48,7 +48,7 @@ class Jojify(object):
       score = cls._similarity_match(text, emoji_name)
       if score > max_score:
         max_emoji = cls.emoji_dict.get(emoji_name).get("emoji")
-        max_unicode = cls.emoji_dict.get(emoji_name.get("unicode"))
+        max_unicode = cls.emoji_dict.get(emoji_name).get("unicode")
         max_score = score
     return max_emoji, max_unicode, max_score
 
