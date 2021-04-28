@@ -3545,9 +3545,9 @@ def create_data(k):
 def write_to_disk(data, path):
     try:
         file_ = open(path, "wb")
-        pickle.dump(j, file_)
+        pickle.dump(data, file_)
         return True
-    except Exception as e:
+    except Exception as _:
         return False
 
 data = create_data(emoji_dataset)
