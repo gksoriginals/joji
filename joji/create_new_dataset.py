@@ -5,7 +5,7 @@ import pickle
 nlp = spacy.load("en_core_web_md")
 emoji_write_path = "joji/data/emoji_dict1.p"
 
-k  = {
+emoji_dataset  = {
     u':1st_place_medal:': u'\U0001F947',
     u':2nd_place_medal:': u'\U0001F948',
     u':3rd_place_medal:': u'\U0001F949',
@@ -3529,19 +3529,29 @@ k  = {
     u':Åland_Islands:': u'\U0001F1E6\U0001F1FD',
 }
 
-j = {}
+def create_data(k):
+    j = {}
+    for i in k:
+        line = i.replace(':', '')
+        line = line.replace('-', ' ')
+        line = line.replace('_', ' ')
+        j[line] = {
+            "emoji": k[i],
+            "short_name": i,
+            "vector": nlp(line) 
+        }
+    return j
 
-for i in k:
-    line = i.replace(':', '')
-    line = line.replace('-', ' ')
-    line = line.replace('_', ' ')
-    j[line] = {
-        "emoji": k[i],
-        "short_name": i,
-        "vector": nlp(line) 
-    }
+def write_to_disk(data, path):
+    try:
+        file_ = open(path, "wb")
+        pickle.dump(j, file_)
+        return True
+    except Exception as e:
+        return False
 
-file_ = open(emoji_write_path, "wb")
-pickle.dump(j, file_)
+data = create_data(emoji_dataset)
+print(write_to_disk(data, emoji_write_path))
+
 
 
