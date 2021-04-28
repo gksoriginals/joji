@@ -1,5 +1,7 @@
 import os
+import emoji
 import json
+import emoji
 import spacy
 import pickle
 import numpy as np
@@ -15,7 +17,7 @@ except OSError:
 
 emoji_dict_path = os.path.join(
   os.path.dirname(__file__),
-  "data/emoji_dict.p"
+  "data/emoji_dict1.p"
 )
 infile = open(emoji_dict_path, 'rb')
 emoji_dict = pickle.load(infile)
@@ -26,13 +28,18 @@ class Jojify(object):
   class containing methods to map text to emoji
   """  
   emoji_dict = emoji_dict
+
+  @staticmethod
+  def generate_unicode(emoj):
+    return f'U+{ord(emoj):X}' if len(emoj) == 1 else emoj
   
   @classmethod
   def _simple_check(cls, text):
     if text in cls.emoji_dict:
+      emoji_ = emoji.emojize(cls.emoji_dict.get(text).get("short_name"))
       return (
-        cls.emoji_dict.get(text).get("emoji"),
-        cls.emoji_dict.get(text).get("unicode"),
+        emoji_,
+        cls.generate_unicode(emoji_),
         1
       )
     return None
@@ -55,9 +62,9 @@ class Jojify(object):
     for emoji_name in cls.emoji_dict:
       score = cls._similarity_match(text, emoji_dict.get(emoji_name).get("vector"))
       if score > max_score:
-        max_emoji = cls.emoji_dict.get(emoji_name).get("emoji")
-        max_unicode = cls.emoji_dict.get(emoji_name).get("unicode")
+        max_emoji = emoji.emojize(cls.emoji_dict.get(emoji_name).get("short_name"))
         max_score = score
+    max_unicode = cls.generate_unicode(max_emoji)
     return max_emoji, max_unicode, max_score
 
 
