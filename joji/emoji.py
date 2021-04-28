@@ -2,6 +2,9 @@ import os
 import json
 import spacy
 import pickle
+import numpy as np
+from numba import jit
+
 try:
   nlp = spacy.load("en_core_web_md")
 except OSError:
@@ -38,6 +41,12 @@ class Jojify(object):
   def _similarity_match(word1, word2):
     word1 = nlp(word1)
     return word1.similarity(word2)
+
+  @classmethod
+  def _similarity_match_1(cls, word1, word2):
+    word1 = nlp(word1)
+    return cls.cosine_similarity_numba(word1.vector, word2.vector)
+
     
   @classmethod  
   def _context_similarity_check(cls, text):
@@ -64,5 +73,19 @@ class Jojify(object):
     emoji = cls._context_similarity_check(text) if not emoji else emoji
     return emoji if emoji else text
   
- 
+  @staticmethod
+  @jit(nopython=True)
+  def cosine_similarity_numba(u:np.ndarray, v:np.ndarray):
+    assert(u.shape[0] == v.shape[0])
+    uv = 0
+    uu = 0
+    vv = 0
+    for i in range(u.shape[0]):
+        uv += u[i]*v[i]
+        uu += u[i]*u[i]
+        vv += v[i]*v[i]
+    cos_theta = 0
+    if uu!=0 and vv!=0:
+        cos_theta = uv/np.sqrt(uu*vv)
+    return cos_theta
   
