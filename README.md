@@ -28,11 +28,11 @@ pip install joji
 ## How to Run 
 
 ```python
->> from joji.emoji import Jojify
+>> from joji.jojify import Jojify
 >> print(Jojify.predict("dracula"))
-('🧛', '1F9DB', 0.9999999549276969)
+('🧛', 'U+1F9DB', 0.5509367532053601)
 >> print(Jojify.predict("ganja"))
-('🌿', '1f33f', 0.49594232662709153)
+('🌿', 'U+1F33F', 0.2860632682239092)
 
 ```
 
