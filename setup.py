@@ -19,7 +19,8 @@ requirements = [
     "mysql-connector-python",
     "unidecode",
     "spacy",
-    "emoji"
+    "emoji",
+    "numba"
 ]
 
 setup(
