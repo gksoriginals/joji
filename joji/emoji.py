@@ -10,7 +10,10 @@ except OSError:
   download('en_core_web_md')
   nlp = spacy.load('en_core_web_md')
 
-emoji_dict_path = "joji/data/emoji_dict.p"
+emoji_dict_path = os.path.join(
+  os.path.dirname(__file__),
+  "data/emoji_dict.p"
+)
 infile = open(emoji_dict_path, 'rb')
 emoji_dict = pickle.load(infile)
 infile.close()
