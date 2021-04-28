@@ -1,7 +1,6 @@
 import os
 import emoji
 import json
-import emoji
 import spacy
 import pickle
 import numpy as np
