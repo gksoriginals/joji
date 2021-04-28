@@ -57,6 +57,7 @@ class Jojify(object):
   def _simple_check(text, emoji_dict):
     emoji_data, score = None, 0.0
     if text in emoji_dict:
+      score = 1.0
       emoji_data = emoji_dict.get(text)
     return emoji_data, score
   
