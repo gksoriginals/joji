@@ -30,9 +30,9 @@ pip install joji
 ```python
 >> from joji.emoji import Jojify
 >> print(Jojify.predict("dracula"))
-('🧛', 0.9999999549276969)
+('🧛', '1F9DB', 0.9999999549276969)
 >> print(Jojify.predict("ganja"))
-('🚭', 0.5574894251846991)
+('🌿', '1f33f', 0.49594232662709153)
 
 ```
 

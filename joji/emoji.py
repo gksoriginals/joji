@@ -1,7 +1,7 @@
 import os
 import json
 import spacy
-
+import pickle
 try:
   nlp = spacy.load("en_core_web_md")
 except OSError:
@@ -10,9 +10,10 @@ except OSError:
   download('en_core_web_md')
   nlp = spacy.load('en_core_web_md')
 
-emoji_dict_path = "joji/data/emoji_dict.json"
-emoji_dict = open(emoji_dict_path)
-emoji_dict = json.load(emoji_dict)
+emoji_dict_path = "joji/data/emoji_dict.p"
+infile = open(emoji_dict_path, 'rb')
+emoji_dict = pickle.load(infile)
+infile.close()
 
 class Jojify(object):
   """
@@ -33,19 +34,14 @@ class Jojify(object):
   @staticmethod
   def _similarity_match(word1, word2):
     word1 = nlp(word1)
-    words = word2.split(" ")
-    if len(words) > 1:
-      return max([nlp(word).similarity(word1) for word in words])
-    else:
-      word2 = nlp(word2)
-      return word1.similarity(word2)
+    return word1.similarity(word2)
     
   @classmethod  
   def _context_similarity_check(cls, text):
     max_score = 0 # set threshold value instead
     max_emoji = None
     for emoji_name in cls.emoji_dict:
-      score = cls._similarity_match(text, emoji_name)
+      score = cls._similarity_match(text, emoji_dict.get(emoji_name).get("vector"))
       if score > max_score:
         max_emoji = cls.emoji_dict.get(emoji_name).get("emoji")
         max_unicode = cls.emoji_dict.get(emoji_name).get("unicode")
