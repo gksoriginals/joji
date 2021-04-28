@@ -24,7 +24,7 @@ requirements = [
 
 setup(
     name="joji",
-    version="1.0.0",
+    version="1.0.1",
     description="convert a word to corresponding emoji",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -33,7 +33,7 @@ setup(
     author_email="gopikrishnans1996@gmail.com",
     license="MIT",
     zip_safe=False,
-    packages=find_packages(exclude=['tests']),
+    packages=["joji"],
     include_package_data=True,
     install_requires=requirements
 )
