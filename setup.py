@@ -24,7 +24,7 @@ requirements = [
 
 setup(
     name="joji",
-    version="1.0.2",
+    version="1.0.3",
     description="convert a word to corresponding emoji",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -34,7 +34,6 @@ setup(
     license="MIT",
     zip_safe=False,
     packages=["joji"],
-    package_data={"joji": ["data/emoji_dict.json"]},
     include_package_data=True,
     install_requires=requirements
 )
