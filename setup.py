@@ -34,6 +34,7 @@ setup(
     license="MIT",
     zip_safe=False,
     packages=["joji"],
+    package_data={"joji": ["data/emoji_dict.json"]},
     include_package_data=True,
     install_requires=requirements
 )
