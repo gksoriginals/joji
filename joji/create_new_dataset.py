@@ -3532,7 +3532,9 @@ k  = {
 j = {}
 
 for i in k:
-    line = re.sub(':_-', '', i)
+    line = i.replace(':', '')
+    line = line.replace('-', ' ')
+    line = line.replace('_', ' ')
     j[line] = {
         "emoji": k[i],
         "short_name": i,
