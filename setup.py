@@ -24,7 +24,7 @@ requirements = [
 
 setup(
     name="joji",
-    version="1.0.1",
+    version="1.0.2",
     description="convert a word to corresponding emoji",
     long_description=README,
     long_description_content_type="text/markdown",
