@@ -10,7 +10,7 @@ except OSError:
   download('en_core_web_md')
   nlp = spacy.load('en_core_web_md')
 
-emoji_dict_path = "data/emoji_dict.json"
+emoji_dict_path = "joji/data/emoji_dict.json"
 emoji_dict = open(emoji_dict_path)
 emoji_dict = json.load(emoji_dict)
 
