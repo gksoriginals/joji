@@ -25,17 +25,24 @@ requirements = [
 
 setup(
     name="joji",
-    version="1.1.8",
+    version="1.1.9",
     description="convert a word to corresponding emoji",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/GopikrishnanSasikumar/joji",
     author="Gopikrishnan Sasikumar",
     author_email="gopikrishnans1996@gmail.com",
-    license="MIT",
     zip_safe=False,
     packages=["joji"],
     package_data={"joji": ["data/emoji_dict1.p"]},
     include_package_data=True,
-    install_requires=requirements
+    install_requires=requirements,
+    classifiers=[
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+    ],
+    keywords="text to emoji"
 )
