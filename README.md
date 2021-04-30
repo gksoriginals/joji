@@ -33,7 +33,8 @@ pip install joji
 ('🧛', 'U+1F9DB', 0.5509367532053601)
 >> print(Jojify.predict("ganja"))
 ('🌿', 'U+1F33F', 0.2860632682239092)
-
+>> print(Jojify.predict("ironman"))
+('🦸', 'U+1F9B8', 0.40435058484084363)
 ```
 
 ## How to Test 
