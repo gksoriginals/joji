@@ -14,6 +14,8 @@ except OSError:
   download('en_core_web_md')
   nlp = spacy.load('en_core_web_md')
 
+ALL_STOPWORDS = nlp.Defaults.stop_words
+
 emoji_dict_path = os.path.join(
   os.path.dirname(__file__),
   "data/emoji_dict1.p"
@@ -60,7 +62,16 @@ class Jojify(object):
       score = 1.0
       emoji_data = emoji_dict.get(text)
     return emoji_data, score
-  
+
+  @classmethod
+  def _sentence_check(cls, text, emoji_dict):
+    words = text.split(" ")
+    for word in words:
+      emoji_data, score = cls._simple_check(word, emoji_dict)
+      if score == 1.0:
+        return emoji_data, score
+    return None, 0.0
+
   @staticmethod
   def _similarity_match(word1, nlpfied2):
     word1 = nlp(word1) 
@@ -84,14 +95,50 @@ class Jojify(object):
     return max_emoji_data, max_score
 
   @staticmethod
+  def remove_stop_words(text):
+    text_tokens = text.split(" ")
+    words= [
+      word for word in text_tokens if not word in ALL_STOPWORDS
+    ]
+    return words
+
+  @classmethod
+  def sentence_context_check(cls, text, emoji_dict):
+    score_list = []
+    emoji_data_list = []
+    words = cls.remove_stop_words(text)
+    for word in words:
+      emoji_data, score = cls._context_similarity_check(
+        word, emoji_dict
+      )
+      emoji_data_list.append(emoji_data)
+      score_list.append(score)
+    score = sum(score_list)/len(score_list)
+    return emoji_data_list, score
+
+  @staticmethod
   def get_short_name(emoji_data):
     return emoji_data.get("short_name")
 
   @classmethod
   def get_emoji_and_unicode(cls, emoji_data):
-    short_name = cls.get_short_name(emoji_data)
-    max_emoji = emoji.emojize(short_name)
-    max_unicode = cls.generate_unicode(max_emoji)
+    if type(emoji_data) == list:
+      max_emoji = ""
+      max_unicode = []
+      for data in emoji_data:
+        short_name = cls.get_short_name(data)
+        emoji_ = emoji.emojize(short_name)
+        max_emoji = "".join(
+          [
+            max_emoji,
+            emoji_   
+          ]
+        )
+        max_unicode.append(cls.generate_unicode(emoji_))
+    else:
+      short_name = cls.get_short_name(emoji_data)
+      max_emoji = emoji.emojize(short_name)
+      max_unicode = cls.generate_unicode(max_emoji)
     return max_emoji, max_unicode
 
   @staticmethod
@@ -100,11 +147,40 @@ class Jojify(object):
     return text
 
   @classmethod
+  def sentence_split_logic(cls, text, emoji_dict):
+    if len(text.split(" ")) > 1:
+      emoji_data, score = cls._sentence_check(
+        text, cls.emoji_dict
+      )
+      if not emoji_data:
+        emoji_data, score = cls.sentence_context_check(
+          text, cls.emoji_dict
+        )
+    else:
+      emoji_data, score = cls._simple_check(
+        text, cls.emoji_dict
+      )
+      if not emoji_data:
+        emoji_data, score = cls._context_similarity_check(
+          text, cls.emoji_dict
+        )
+    return emoji_data, score
+  
+  @classmethod
+  def sentence_logic(cls, text, emoji_dict):
+    emoji_data, score = cls._simple_check(
+      text, cls.emoji_dict
+    )
+    if not emoji_data:
+      emoji_data, score = cls._context_similarity_check(
+        text, cls.emoji_dict
+      )
+    return emoji_data, score
+
+  @classmethod
   def predict(cls, text):
     text = cls.preprocess(text)
-    emoji_data, score = cls._simple_check(text, cls.emoji_dict)
-    if not emoji_data:
-      emoji_data, score = cls._context_similarity_check(text, cls.emoji_dict)
+    emoji_data, score = cls.sentence_split_logic(text, cls.emoji_dict)
     max_emoji, max_unicode = cls.get_emoji_and_unicode(emoji_data)
     return (max_emoji, max_unicode, score) if score else text
   
