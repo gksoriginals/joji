@@ -35,6 +35,8 @@ pip install joji
 ('🌿', 'U+1F33F', 0.2860632682239092)
 >> print(Jojify.predict("ironman"))
 ('🦸', 'U+1F9B8', 0.40435058484084363)
+>> print(Jojify.predict("good night"))
+('👌🌃', ['U+1F44C', 'U+1F303'], 0.7178929764409834)
 ```
 
 ## How to Test 
