@@ -3,7 +3,7 @@ import spacy
 import re
 import pickle
 nlp = spacy.load("en_core_web_md")
-emoji_write_path = "joji/data/emoji_dict1.p"
+emoji_write_path = "joji/data/e
 
 emoji_dataset  = {
     u':1st_place_medal:': u'\U0001F947',
