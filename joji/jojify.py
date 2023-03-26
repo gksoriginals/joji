@@ -5,6 +5,7 @@ import os
 import pickle
 import emoji
 import spacy
+from keybert import KeyBERT
 
 try:
     nlp = spacy.load("en_core_web_md")
@@ -30,6 +31,7 @@ class Jojify(object):
     class containing methods to map text to emoji
     """
     emoji_dict = emoji_dict
+    kw_model = KeyBERT()
 
     @staticmethod
     def generate_unicode(emoj):
@@ -54,8 +56,10 @@ class Jojify(object):
         """
         Direct search for emoji in sentence
         """
-        words = text.split(" ")
-        for word in words:
+        #words = text.split(" ")
+        _, keywords = cls.extract(text)
+        keywords = cls.filter_keywords(keywords)
+        for word, score in keywords:
             emoji_data, score = cls._simple_check(word)
             if score == 1.0:
                 return emoji_data, score
@@ -105,17 +109,19 @@ class Jojify(object):
         """
         Context check in sentence
         """
-        score_list = []
-        emoji_data_list = []
-        words = cls.remove_stop_words(text)
-        for word in words:
-            emoji_data, score = cls._context_similarity_check(
+        score = 0
+        data = {}
+        #words = cls.remove_stop_words(text)
+        _, keywords = cls.extract(text)
+        keywords = cls.filter_keywords(keywords)
+        for word, _ in keywords:
+            emoji_data, predict_score = cls._context_similarity_check(
                 word
             )
-            emoji_data_list.append(emoji_data)
-            score_list.append(score)
-        score = sum(score_list)/len(score_list)
-        return emoji_data_list, score
+            if predict_score > score:
+                score = predict_score
+                data = emoji_data
+        return data, score
 
     @staticmethod
     def get_short_name(emoji_data):
@@ -129,23 +135,9 @@ class Jojify(object):
         """
         Get emoji and unicode
         """
-        if isinstance(emoji_data, list):
-            max_emoji = ""
-            max_unicode = []
-            for data in emoji_data:
-                short_name = cls.get_short_name(data)
-                emoji_ = emoji.emojize(short_name)
-                max_emoji = "".join(
-                    [
-                        max_emoji,
-                        emoji_
-                    ]
-                )
-                max_unicode.append(cls.generate_unicode(emoji_))
-        else:
-            short_name = cls.get_short_name(emoji_data)
-            max_emoji = emoji.emojize(short_name)
-            max_unicode = cls.generate_unicode(max_emoji)
+        short_name = cls.get_short_name(emoji_data)
+        max_emoji = emoji.emojize(short_name)
+        max_unicode = cls.generate_unicode(max_emoji)
         return max_emoji, max_unicode
 
     @staticmethod
@@ -157,7 +149,7 @@ class Jojify(object):
         return text
 
     @classmethod
-    def sentence_split_logic(cls, text):
+    def word_or_sentence_logic(cls, text):
         """
         Sentence split logic code
         """
@@ -200,6 +192,62 @@ class Jojify(object):
         Logic to predict the emoji
         """
         text = cls.preprocess(text)
-        emoji_data, score = cls.sentence_split_logic(text)
+        emoji_data, score = cls.word_or_sentence_logic(text)
         max_emoji, max_unicode = cls.get_emoji_and_unicode(emoji_data)
         return (max_emoji, max_unicode, score) if score else text
+    
+    @staticmethod
+    def combine_keywords(text, keywords):
+        """
+        Combine keywords to form a sentence
+        """
+        strings, combine_keyword = [], ""
+        words = text.lower().split()
+        keywords = [
+            i for i, j in keywords
+        ]
+        for _, word in enumerate(words):
+            if word in keywords:
+                combine_keyword = " ".join(
+                    [
+                        combine_keyword, word
+                    ]
+                )
+            else:
+                if combine_keyword:
+                    strings.append(
+                        combine_keyword.strip()
+                    )
+                combine_keyword = ""
+        if combine_keyword:
+            strings.append(
+                combine_keyword.strip()
+            )
+        return strings
+    
+
+    @classmethod
+    def extract(cls, text, combine=False):
+        """
+        extract logic for keywords
+        """
+        keywords = cls.kw_model.extract_keywords(
+            text
+        )
+        if combine:
+            keywords = cls.combine_keywords(
+                text, keywords
+            )
+        return text, keywords
+    
+    @staticmethod
+    def filter_keywords(keywords, threshold=0.5):
+        """
+        Filter keywords based on a threshold
+        """
+        return [
+            (i, j) for i, j in keywords if j > threshold
+        ]
+    
+
+
