@@ -135,9 +135,13 @@ class Jojify(object):
         """
         Get emoji and unicode
         """
-        short_name = cls.get_short_name(emoji_data)
-        max_emoji = emoji.emojize(short_name)
-        max_unicode = cls.generate_unicode(max_emoji)
+        try:
+            short_name = cls.get_short_name(emoji_data)
+            max_emoji = emoji.emojize(short_name)
+            max_unicode = cls.generate_unicode(max_emoji)
+        except Exception as _:
+            max_emoji = None
+            max_unicode = None
         return max_emoji, max_unicode
 
     @staticmethod
